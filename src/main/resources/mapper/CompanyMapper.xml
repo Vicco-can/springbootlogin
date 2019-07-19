@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.company.corporation.springboot.springbootlogin.dao.CompanyDao" >
+  <resultMap id="BaseResultMap" type="com.company.corporation.springboot.springbootlogin.entity.Company" >
+    <constructor >
+      <arg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="company_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_admin_tel" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="city_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="area_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.company.corporation.springboot.springbootlogin.entity.Company" >
+    insert into company (id, company_id, company_name, 
+      company_admin_tel, company_address, company_email, 
+      city_id, area_id, company_status
+      )
+    values (#{id,jdbcType=BIGINT}, #{companyId,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, 
+      #{companyAdminTel,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR}, #{companyEmail,jdbcType=VARCHAR}, 
+      #{cityId,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR}, #{companyStatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.company.corporation.springboot.springbootlogin.entity.Company" >
+    insert into company
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="companyAdminTel != null" >
+        company_admin_tel,
+      </if>
+      <if test="companyAddress != null" >
+        company_address,
+      </if>
+      <if test="companyEmail != null" >
+        company_email,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="companyStatus != null" >
+        company_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAdminTel != null" >
+        #{companyAdminTel,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyEmail != null" >
+        #{companyEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyStatus != null" >
+        #{companyStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
