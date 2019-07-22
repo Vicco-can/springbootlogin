@@ -9,9 +9,12 @@
       <arg column="tel" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="role" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="misscount" javaType="java.lang.Integer" jdbcType="TINYINT" />
+      <arg column="allowtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="logical_state" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
+
   <insert id="insert" parameterType="com.company.corporation.springboot.springbootlogin.entity.User">
     insert into user (id, user_name, company_id, 
       tel, password, role, 
@@ -23,4 +26,31 @@
   <select id="selectUserByid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select * from user where id = #{id}
   </select>
+  <select id="selectUserByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from user where user_name = #{name}
+  </select>
+  <select id="selectUserByNamePwd" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from user where user_name = #{name} and password = #{password}
+  </select>
+  <update id="updateUserMissLogin">
+    update user set
+    misscount = #{misscount},allowtime = #{allowtime} where user_name = #{name}
+  </update>
+
+  <update id="updateUser" parameterType="com.company.corporation.springboot.springbootlogin.entity.User">
+  update user
+  <trim prefix="SET" suffixOverrides=",">
+
+    <if test="misscount != null and misscount != '' ">
+      misscount = #{misscount},
+    </if>
+    <if test="allowtime != null and allowtime != '' ">
+      allowtime = #{allowtime},
+    </if>
+    <if test="logical_state != null ">
+      logical_state = #{logical_state},
+    </if>
+  </trim>
+  WHERE user_name = #{name}
+  </update>
 </mapper>

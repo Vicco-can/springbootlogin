@@ -1,5 +1,7 @@
 package com.company.corporation.springboot.springbootlogin.entity;
 
+import java.util.Date;
+
 public class User {
     private Long id;
 
@@ -13,21 +15,27 @@ public class User {
 
     private String role;
 
+    private int misscount;
+
+    private Date allowtime;
+
     private String logicalState;
 
-    public User(Long id, String userName, String companyId, String tel, String password, String role, String logicalState) {
+    public User(Long id, String userName, String companyId, String tel, String password, String role, int misscount, Date allowtime, String logicalState) {
         this.id = id;
         this.userName = userName;
         this.companyId = companyId;
         this.tel = tel;
         this.password = password;
         this.role = role;
+        this.misscount = misscount;
+        this.allowtime = allowtime;
         this.logicalState = logicalState;
     }
 
-//    public User() {
-//        super();
-//    }
+    public User() {
+        super();
+    }
 
     public Long getId() {
         return id;
@@ -75,6 +83,22 @@ public class User {
 
     public void setRole(String role) {
         this.role = role == null ? null : role.trim();
+    }
+
+    public int getMisscount() {
+        return misscount;
+    }
+
+    public void setMisscount(int misscount) {
+        this.misscount = misscount;
+    }
+
+    public Date getAllowtime() {
+        return allowtime;
+    }
+
+    public void setAllowtime(Date allowtime) {
+        this.allowtime = allowtime;
     }
 
     public String getLogicalState() {

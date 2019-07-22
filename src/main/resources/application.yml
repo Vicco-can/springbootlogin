@@ -48,9 +48,9 @@ spring:
     #连接超时时间
     timeout: 120000
 
-  resources:
-
-    static-locations: classpath:/templates  #访问静态页面
+#  resources:
+#
+#    static-locations: classpath:/templates  #访问静态页面
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
