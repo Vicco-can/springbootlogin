@@ -15,13 +15,13 @@ public class User {
 
     private String role;
 
-    private int misscount;
+    private Integer misscount;
 
     private Date allowtime;
 
     private String logicalState;
 
-    public User(Long id, String userName, String companyId, String tel, String password, String role, int misscount, Date allowtime, String logicalState) {
+    public User(Long id, String userName, String companyId, String tel, String password, String role, Integer misscount, Date allowtime, String logicalState) {
         this.id = id;
         this.userName = userName;
         this.companyId = companyId;
@@ -85,11 +85,11 @@ public class User {
         this.role = role == null ? null : role.trim();
     }
 
-    public int getMisscount() {
+    public Integer getMisscount() {
         return misscount;
     }
 
-    public void setMisscount(int misscount) {
+    public void setMisscount(Integer misscount) {
         this.misscount = misscount;
     }
 

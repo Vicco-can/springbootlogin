@@ -1,9 +1,9 @@
-package com.company.corporation.springboot.springbootlogin.dao;
+package com.company.corporation.springboot.springbootlogin.service;
 
 import com.company.corporation.springboot.springbootlogin.entity.Company;
 
 import java.util.List;
 
-public interface CompanyDao {
+public interface ICompanyService {
     List<Company> findCompanyById(String id);
 }

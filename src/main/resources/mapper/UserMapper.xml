@@ -9,20 +9,83 @@
       <arg column="tel" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="role" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="misscount" javaType="java.lang.Integer" jdbcType="TINYINT" />
+      <arg column="misscount" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="allowtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="logical_state" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
-
   <insert id="insert" parameterType="com.company.corporation.springboot.springbootlogin.entity.User">
     insert into user (id, user_name, company_id, 
       tel, password, role, 
-      logical_state)
+      misscount, allowtime, logical_state
+      )
     values (#{id,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, 
       #{tel,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, 
-      #{logicalState,jdbcType=VARCHAR})
+      #{misscount,jdbcType=INTEGER}, #{allowtime,jdbcType=TIMESTAMP}, #{logicalState,jdbcType=VARCHAR}
+      )
   </insert>
+  <insert id="insertSelective" parameterType="com.company.corporation.springboot.springbootlogin.entity.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="role != null">
+        role,
+      </if>
+      <if test="misscount != null">
+        misscount,
+      </if>
+      <if test="allowtime != null">
+        allowtime,
+      </if>
+      <if test="logicalState != null">
+        logical_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="misscount != null">
+        #{misscount,jdbcType=INTEGER},
+      </if>
+      <if test="allowtime != null">
+        #{allowtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logicalState != null">
+        #{logicalState,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
   <select id="selectUserByid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select * from user where id = #{id}
   </select>
@@ -34,23 +97,20 @@
   </select>
   <update id="updateUserMissLogin">
     update user set
-    misscount = #{misscount},allowtime = #{allowtime} where user_name = #{name}
+    misscount = #{misscount,jdbcType=INTEGER}, allowtime = #{allowtime,jdbcType=TIMESTAMP} where user_name = #{userName,jdbcType=VARCHAR}
   </update>
 
   <update id="updateUser" parameterType="com.company.corporation.springboot.springbootlogin.entity.User">
   update user
   <trim prefix="SET" suffixOverrides=",">
 
-    <if test="misscount != null and misscount != '' ">
-      misscount = #{misscount},
+    <if test="misscount != null">
+      misscount = #{misscount,jdbcType=INTEGER},
     </if>
-    <if test="allowtime != null and allowtime != '' ">
-      allowtime = #{allowtime},
-    </if>
-    <if test="logical_state != null ">
-      logical_state = #{logical_state},
+    <if test="allowtime != null">
+      allowtime = #{allowtime,jdbcType=TIMESTAMP},
     </if>
   </trim>
-  WHERE user_name = #{name}
+  WHERE user_name = #{userName}
   </update>
 </mapper>

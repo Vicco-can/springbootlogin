@@ -14,6 +14,9 @@
       <arg column="company_status" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
+  <select id="findCompanyById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from company where company_id = #{id}
+  </select>
   <insert id="insert" parameterType="com.company.corporation.springboot.springbootlogin.entity.Company" >
     insert into company (id, company_id, company_name, 
       company_admin_tel, company_address, company_email, 

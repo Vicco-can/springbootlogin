@@ -26,6 +26,10 @@ public class LoginController {
         return "login";
     }
 
+    @RequestMapping("/success")
+    public String loginSuccess() {
+        return "success";
+    }
     /**
      * 登录验证：
      * 首先验证用户名是否存在，若存在：
@@ -34,11 +38,13 @@ public class LoginController {
      */
     @RequestMapping("/logincheck")
     @ResponseBody
-    public Map login(HttpServletRequest request, String userName,String password) {
+    public Map login(HttpServletRequest request, String name, String password) {
 
         Map resultMap = new HashMap();
+        System.out.println("用户名、密码： " + name + "  " + password);
         //验证用户名是否存在
-        List<User> userListByName = userService.selectUserByName(userName);
+        List<User> userListByName = userService.selectUserByName(name.trim());
+        System.out.println("数据库中该用户数：" + userListByName.size());
         if (userListByName.size() == 0) {
             resultMap.put("error", "该用户不存在！");
             resultMap.put("code", 101);
@@ -53,25 +59,32 @@ public class LoginController {
         }
 
         //验证用户名、密码
-        List<User> userList = userService.selectUserByNamePwd(userName, password);
+        List<User> userList = userService.selectUserByNamePwd(name, password);
+        User userByName = userListByName.get(0);
         User updateUser = new User();
+        updateUser.setUserName(name);
         if (userList.size() == 0) {//用户名密码错误
             resultMap.put("error", "用户名或密码错误！");
             resultMap.put("code", 101);
             //更新数据库, 登录错误次数加1，允许登录时间更新为当前时间+5分钟
-            int nMissCount = userListByName.get(0).getMisscount() + 1;
+            if (userByName.getMisscount()==null||userByName.getAllowtime()==null
+                    ||Instant.now().isAfter(userByName.getAllowtime().toInstant().plusSeconds(300)))//若锁定时间已超五分钟，登录错误次数清零
+            {
+                userByName.setMisscount(0);
+            }
+            int nMissCount = userByName.getMisscount() + 1;
             Date dtAllowTime = Date.from(Instant.now().plusSeconds(300));
-
             updateUser.setMisscount(nMissCount);
             updateUser.setAllowtime(dtAllowTime);
+            System.out.println(dtAllowTime);
             userService.updateUser(updateUser);
-//            userService.updateUserMissLogin(nMissCount, dtNow, userName);
 
         } else {//验证成功
-//            resultMap.put("error", "用户被锁定，请5分钟后再试！");
             resultMap.put("code", 100);
+            resultMap.put("companyid", userList.get(0).getCompanyId());
             //更新数据库，登录错误次数清零
             updateUser.setMisscount(0);
+            System.out.println(updateUser.getAllowtime());
             userService.updateUser(updateUser);
 
         }
@@ -79,14 +92,24 @@ public class LoginController {
         return resultMap;
     }
 
+    /***
+     * 验证用户是否需要锁定：错误登录次数五分钟内超5次
+     * @param userList
+     * @return true需要锁定
+     */
     private boolean checkMissCount(List<User> userList) {
         if (userList.size() == 0) {
             return true;
         }
-
-        User user = userList.get(0);
-        Instant dateAllowTime = user.getAllowtime().toInstant();
         Instant dateNow = Instant.now();
+        User user = userList.get(0);
+        Instant dateAllowTime = dateNow.minusSeconds(300);
+        if (user.getAllowtime()!=null){
+            dateAllowTime = user.getAllowtime().toInstant();
+        }
+        if (user.getMisscount() == null||dateNow.isAfter(dateAllowTime.plusSeconds(300))) {
+            user.setMisscount(0);
+        }
 
         if (user.getMisscount() >= 5 && dateNow.isBefore(dateAllowTime)) {
             return true;

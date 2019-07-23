@@ -26,7 +26,7 @@ $(function() {
                         $('#user_insert_btn').attr('disabled',"true");
                     }else{
                         //显示验证码正确信息
-                        show_validate_msg("#kaptcha", "success", "验证码正确");
+                        show_validate_msg("#kaptcha", "templates.success", "验证码正确");
                         $('#user_insert_btn').removeAttr("disabled");
                     }
 
@@ -38,7 +38,7 @@ $(function() {
 });
 
 function show_validate_msg(ele, status, msg) {
-    if ("success" == status) {
+    if ("templates.success" == status) {
         // 让父容器变色
         $(ele).parent().addClass("has-success");
         // 给sapn赋值正确信息
