@@ -16,7 +16,8 @@ $(function(){
                     console.log(msg);
                     //100表示成功
                     if (msg.code == 100) {
-                        window.location.href = "company？companyid="+msg.companyid;
+                        // window.location.href = "company?companyid="+msg.companyid;
+                        window.location.href = "findcompany?listcompanyid="+msg.listcompanyid;
                     } else {
                         $('#prompt').text(msg.error);
                     }

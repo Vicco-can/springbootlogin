@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 //@RequestMapping("/api")
@@ -30,6 +27,7 @@ public class LoginController {
     public String loginSuccess() {
         return "success";
     }
+
     /**
      * 登录验证：
      * 首先验证用户名是否存在，若存在：
@@ -67,8 +65,8 @@ public class LoginController {
             resultMap.put("error", "用户名或密码错误！");
             resultMap.put("code", 101);
             //更新数据库, 登录错误次数加1，允许登录时间更新为当前时间+5分钟
-            if (userByName.getMisscount()==null||userByName.getAllowtime()==null
-                    ||Instant.now().isAfter(userByName.getAllowtime().toInstant().plusSeconds(300)))//若锁定时间已超五分钟，登录错误次数清零
+            if (userByName.getMisscount() == null || userByName.getAllowtime() == null
+                    || Instant.now().isAfter(userByName.getAllowtime().toInstant().plusSeconds(300)))//若锁定时间已超五分钟，登录错误次数清零
             {
                 userByName.setMisscount(0);
             }
@@ -82,6 +80,11 @@ public class LoginController {
         } else {//验证成功
             resultMap.put("code", 100);
             resultMap.put("companyid", userList.get(0).getCompanyId());
+            List<String> listCompanyId = new ArrayList<>();
+            for (User user : userList) {
+                listCompanyId.add(user.getCompanyId());
+            }
+            resultMap.put("listcompanyid", listCompanyId);
             //更新数据库，登录错误次数清零
             updateUser.setMisscount(0);
             System.out.println(updateUser.getAllowtime());
@@ -104,10 +107,10 @@ public class LoginController {
         Instant dateNow = Instant.now();
         User user = userList.get(0);
         Instant dateAllowTime = dateNow.minusSeconds(300);
-        if (user.getAllowtime()!=null){
+        if (user.getAllowtime() != null) {
             dateAllowTime = user.getAllowtime().toInstant();
         }
-        if (user.getMisscount() == null||dateNow.isAfter(dateAllowTime.plusSeconds(300))) {
+        if (user.getMisscount() == null || dateNow.isAfter(dateAllowTime.plusSeconds(300))) {
             user.setMisscount(0);
         }
 

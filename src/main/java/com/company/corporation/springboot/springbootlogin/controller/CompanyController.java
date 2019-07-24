@@ -5,6 +5,7 @@ import com.company.corporation.springboot.springbootlogin.service.ICompanyServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +19,16 @@ public class CompanyController {
 
     @RequestMapping("company")
     @ResponseBody
-    public List<Company> findCompany(HttpServletRequest request, String companyid){
+    public List<Company> findCompany(HttpServletRequest request, String companyid) {
 
         return companyService.findCompanyById(companyid);
     }
+
+    @RequestMapping("findcompany")
+    @ResponseBody
+    public List<Company> findCompanies(@RequestParam("listcompanyid") List<String> listcompanyid) {
+        System.out.println(listcompanyid.size());
+        return companyService.findCompany(listcompanyid);
+    }
+
 }

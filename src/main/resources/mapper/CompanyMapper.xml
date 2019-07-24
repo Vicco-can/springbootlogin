@@ -17,6 +17,16 @@
   <select id="findCompanyById" parameterType="java.lang.String" resultMap="BaseResultMap">
     select * from company where company_id = #{id}
   </select>
+  <select id="findCompany" parameterType="java.util.List" resultMap="BaseResultMap">
+    select * from company
+    <where>
+        and company_id in
+      <foreach item="item" index="listCompanyId" collection="list" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </where>
+  </select>
+
   <insert id="insert" parameterType="com.company.corporation.springboot.springbootlogin.entity.Company" >
     insert into company (id, company_id, company_name, 
       company_admin_tel, company_address, company_email, 

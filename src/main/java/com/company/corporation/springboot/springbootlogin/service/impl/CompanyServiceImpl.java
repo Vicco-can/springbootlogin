@@ -18,4 +18,9 @@ public class CompanyServiceImpl implements ICompanyService {
     public List<Company> findCompanyById(String id){
         return companyDao.findCompanyById(id);
     }
+
+    @Override
+    public List<Company> findCompany(List<String> listCompanyId){
+        return companyDao.findCompany(listCompanyId);
+    }
 }
