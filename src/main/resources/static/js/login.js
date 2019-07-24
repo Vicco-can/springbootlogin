@@ -8,7 +8,8 @@ $(function(){
             var password = $("#password").val();
             //发送ajax请求修改员工数据
             $.ajax({
-                url:"logincheck",
+                // url:"logincheck",
+                url:"checklogin",
                 data:
                     {name:name,password:password},
                 type:"post",

@@ -42,7 +42,7 @@ public class LoginController {
         System.out.println("用户名、密码： " + name + "  " + password);
         //验证用户名是否存在
         List<User> userListByName = userService.selectUserByName(name.trim());
-        System.out.println("数据库中该用户数：" + userListByName.size());
+//        System.out.println("数据库中该用户数：" + userListByName.size());
         if (userListByName.size() == 0) {
             resultMap.put("error", "该用户不存在！");
             resultMap.put("code", 101);
@@ -74,7 +74,7 @@ public class LoginController {
             Date dtAllowTime = Date.from(Instant.now().plusSeconds(300));
             updateUser.setMisscount(nMissCount);
             updateUser.setAllowtime(dtAllowTime);
-            System.out.println(dtAllowTime);
+//            System.out.println(dtAllowTime);
             userService.updateUser(updateUser);
 
         } else {//验证成功
@@ -87,7 +87,7 @@ public class LoginController {
             resultMap.put("listcompanyid", listCompanyId);
             //更新数据库，登录错误次数清零
             updateUser.setMisscount(0);
-            System.out.println(updateUser.getAllowtime());
+//            System.out.println(updateUser.getAllowtime());
             userService.updateUser(updateUser);
 
         }
